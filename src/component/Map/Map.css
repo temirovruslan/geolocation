@@ -1,0 +1,26 @@
+.container{
+    width: 100vw;
+    height: 100vh;
+}
+.lat{
+    position: absolute;
+    left: 30px;
+    top: 30px;
+}
+.lon{
+    position: absolute;
+    left: 30px;
+    top: 70px;
+}
+
+
+.sp{
+    position: absolute;
+    left: 30px;
+    top: 130px;
+}
+.acc{
+    position: absolute;
+    left: 30px;
+    top: 100px;
+}
