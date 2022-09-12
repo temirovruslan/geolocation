@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./Map.css";
 import { defaultTheme } from "./Theme";
-import { Marker,GoogleMap  } from "@react-google-maps/api";
+import { Marker } from "@react-google-maps/api";
 
-// import { GoogleMap } from "@react-google-maps/api";
+import { GoogleMap } from "@react-google-maps/api";
 
 //*==========================================================*//
 const containerStyle = {
@@ -33,9 +33,9 @@ const defaultOptions = {
 const Map = ({ center }) => {
 	const [userLatitude, setUserLatitude] = useState(null);
 	const [userLongitude, setUserLongitude] = useState(null);
-	const [userSpeed, setUserSpeed] = useState(null);
+	// const [userSpeed, setUserSpeed] = useState(null);
 	const [userAccuracy, setUserAccuracy] = useState(null);
-
+	// console.log(userSpeed);
 
 	const mapRef = React.useRef(undefined);
 
@@ -49,22 +49,28 @@ const Map = ({ center }) => {
 	
 
 	
+	// 1) test 
+	const watchUser = (position) => {
+		const { latitude, longitude,accuracy } = position.coords;
+		setUserLatitude(latitude)
+		setUserLongitude(longitude)
+		setUserAccuracy(accuracy)
+		console.log('work');
+	}	
 
-	
-	// get user coordinaties when he moves
-	useEffect(() => {
-		const watchId = () => navigator.geolocation.watchPosition(position => {
-			const { latitude, longitude,accuracy,speed } = position.coords;
-			setUserLatitude(latitude);
-			setUserLongitude(longitude);
-			setUserAccuracy(accuracy)
-			setUserSpeed(speed)
-			
-			
-		});
-		watchId()
+	const userMove = navigator.geolocation.watchPosition(watchUser)
 
-	},[userAccuracy])
+	// 2) test 
+	// useEffect(() => {
+	// 	const watchId = () => navigator.geolocation.watchPosition(position => {
+	// 		const { latitude, longitude,accuracy,speed } = position.coords;
+	// 		setUserLatitude(latitude);
+	// 		setUserLongitude(longitude);
+	// 		setUserAccuracy(accuracy)
+	// 		setUserSpeed(speed)
+	// 	});
+	// 	watchId()
+	// },[userAccuracy])
 	
 
 	return (
@@ -82,13 +88,34 @@ const Map = ({ center }) => {
        
 				<></>
 			</GoogleMap>
-			<h2 className="lat">lat : {userLatitude}</h2>
-			<h2 className="lon">lon : {userLongitude}</h2>
-			<h2 className="sp">speed : {userSpeed}</h2>
-			<h2 className="acc">accuracy : {userAccuracy}</h2>
+			<h1 className="lat">lat : {userLatitude}</h1>
+			<h1 className="lon">lon : {userLongitude}</h1>
+			<h1 className="acc">accuracy : {userAccuracy}</h1>
 		</div>
 	);
 };
 
 export default Map;
+
+
+
+
+// const componentDidMount = () => {
+	// 	navigator.geolocation.getCurrentPosition(function (position) {
+	// 		navigator.geolocation.watchPosition()
+	// 		// setUserLatitude(position.coords.latitude);
+	// 		// setUserLongitude(position.coords.longitude);
+	// 		console.log(position.coords);
+	
+	// 	});
+	// }
+	// componentDidMount();
+	// const watchId = navigator.geolocation.watchPosition(position => {
+	// 	const { latitude, longitude,accuracy } = position.coords;
+	// 	setUserLatitude(latitude);
+	// 	setUserLongitude(longitude);
+	// 	setUserAccuracy(accuracy)
+	// 	console.log(position.coords);
+	// 	// Show a map centered at latitude / longitude.
+	// });
 
