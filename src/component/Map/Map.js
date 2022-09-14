@@ -33,7 +33,7 @@ const defaultOptions = {
 
 //*==========================================================*//
 const Map = ({center}) => {
-	// console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',props);
+	
 	const [userLatitude, setUserLatitude] = useState(null);
 	const [userLongitude, setUserLongitude] = useState(null);
 	const [userAccuracy, setUserAccuracy] = useState(null);
@@ -59,7 +59,7 @@ const Map = ({center}) => {
 		setInterval(()=>{
 			setLatitudeM(faker.address.latitude()) 
 			setLonogitudeM(faker.address.longitude())
-		},500)
+		},2500)
 	},[faker])
 
 
@@ -92,14 +92,10 @@ const Map = ({center}) => {
 				...lon.second = faker.address.longitude(),
 				...lon.third = faker.address.longitude(),
 			}))
-		},500)
+		},2500)
 	},[faker])
 	
 
-	let a = {
-		first:-130.1649,
-		sec:-66.6255
-	}
 
 
 	return (
@@ -114,16 +110,17 @@ const Map = ({center}) => {
 			>
 				
 
-				<MarkerF position={{ lat: parseFloat(latitudeM), lng: parseFloat(longitudeM) }} />
+				<MarkerF position={{ lat: parseFloat(59.428002), lng: parseFloat(24.740948) }} />
+				{/* <MarkerF position={{ lat: parseFloat(latitudeM), lng: parseFloat(longitudeM) }} />
 
 				<MarkerF position={{ lat: parseFloat(usersLatitude.first), lng: parseFloat(usersLongtitude.first) }} />
 				<MarkerF position={{ lat: parseFloat(usersLatitude.second), lng: parseFloat(usersLongtitude.second) }} />
-				<MarkerF position={{ lat: parseFloat(usersLatitude.third), lng: parseFloat(usersLongtitude.third) }} />
+				<MarkerF position={{ lat: parseFloat(usersLatitude.third), lng: parseFloat(usersLongtitude.third) }} /> */}
 
 				
 				<></>
 			</GoogleMap>
-			<button className='btn'>click</button>
+			
 			<h1 className="lat">lat : {userLatitude}</h1>
 			<h1 className="lon">lon : {userLongitude}</h1>
 			<h1 className="acc">accuracy : {userAccuracy}</h1>
