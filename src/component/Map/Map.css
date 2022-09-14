@@ -24,3 +24,9 @@
     left: 30px;
     top: 100px;
 }
+.btn{
+    position: absolute;
+    left: 5%;
+    top:30%;
+    width: 50px;
+}

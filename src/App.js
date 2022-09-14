@@ -28,6 +28,7 @@ const App = () => {
 
 	return (
 		<div>
+	
 			{isLoaded ? <Map center={defaultCenter} />  : <h2>Loading...</h2>}
 		</div>
 	);

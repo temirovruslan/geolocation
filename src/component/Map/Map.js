@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./Map.css";
 import { defaultTheme } from "./Theme";
-import { Marker } from "@react-google-maps/api";
-
+import { Marker ,MarkerF, Polygon} from "@react-google-maps/api";
+// import { Marker } from "./Marker";
 import { GoogleMap } from "@react-google-maps/api";
+import AnyReactComponent from "./AnyReactComponent";
 
+import { faker } from '@faker-js/faker';
 //*==========================================================*//
 const containerStyle = {
 	width: "100%",
@@ -30,12 +32,12 @@ const defaultOptions = {
 };
 
 //*==========================================================*//
-const Map = ({ center }) => {
+const Map = ({center}) => {
+	// console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',props);
 	const [userLatitude, setUserLatitude] = useState(null);
 	const [userLongitude, setUserLongitude] = useState(null);
-	// const [userSpeed, setUserSpeed] = useState(null);
 	const [userAccuracy, setUserAccuracy] = useState(null);
-	// console.log(userSpeed);
+
 
 	const mapRef = React.useRef(undefined);
 
@@ -46,32 +48,59 @@ const Map = ({ center }) => {
 	const onUnmount = React.useCallback(function callback(map) {
 		mapRef.current = map;
 	}, []);
+
+
+	const [latitudeM, setLatitudeM] = useState()
+	const [longitudeM, setLonogitudeM] = useState()
+
+
+	useEffect(()=>{
+	
+		setInterval(()=>{
+			setLatitudeM(faker.address.latitude()) 
+			setLonogitudeM(faker.address.longitude())
+		},500)
+	},[faker])
+
+
+	const [usersLatitude, setUsersLatitude] = useState({
+		first:'',
+		second:'',
+		third:'',
+	})
+	const [usersLongtitude, setUsersLongtitude] = useState({
+		first:'',
+		second:'',
+		third:'',
+	})
 	
 
-	
-	// 1) test 
-	const watchUser = (position) => {
-		const { latitude, longitude,accuracy } = position.coords;
-		setUserLatitude(latitude)
-		setUserLongitude(longitude)
-		setUserAccuracy(accuracy)
-		console.log('work');
-	}	
 
-	const userMove = navigator.geolocation.watchPosition(watchUser)
-
-	// 2) test 
-	// useEffect(() => {
-	// 	const watchId = () => navigator.geolocation.watchPosition(position => {
-	// 		const { latitude, longitude,accuracy,speed } = position.coords;
-	// 		setUserLatitude(latitude);
-	// 		setUserLongitude(longitude);
-	// 		setUserAccuracy(accuracy)
-	// 		setUserSpeed(speed)
-	// 	});
-	// 	watchId()
-	// },[userAccuracy])
+	useEffect(()=>{
+		
+		setInterval(()=>{
+			
+			setUsersLatitude(lat => ({
+				...lat,
+				...lat.first = faker.address.latitude(),
+				...lat.second = faker.address.latitude(),
+				...lat.third = faker.address.latitude(),
+			}))
+			setUsersLongtitude(lon => ({
+				...lon,
+				...lon.first = faker.address.longitude(),
+				...lon.second = faker.address.longitude(),
+				...lon.third = faker.address.longitude(),
+			}))
+		},500)
+	},[faker])
 	
+
+	let a = {
+		first:-130.1649,
+		sec:-66.6255
+	}
+
 
 	return (
 		<div className="container">
@@ -83,11 +112,18 @@ const Map = ({ center }) => {
 				onUnmount={onUnmount}
 				options={defaultOptions}
 			>
-				<Marker position={{ lat: parseFloat(userLatitude), lng: parseFloat(userLongitude) }} />
 				
-       
+
+				<MarkerF position={{ lat: parseFloat(latitudeM), lng: parseFloat(longitudeM) }} />
+
+				<MarkerF position={{ lat: parseFloat(usersLatitude.first), lng: parseFloat(usersLongtitude.first) }} />
+				<MarkerF position={{ lat: parseFloat(usersLatitude.second), lng: parseFloat(usersLongtitude.second) }} />
+				<MarkerF position={{ lat: parseFloat(usersLatitude.third), lng: parseFloat(usersLongtitude.third) }} />
+
+				
 				<></>
 			</GoogleMap>
+			<button className='btn'>click</button>
 			<h1 className="lat">lat : {userLatitude}</h1>
 			<h1 className="lon">lon : {userLongitude}</h1>
 			<h1 className="acc">accuracy : {userAccuracy}</h1>
@@ -97,7 +133,61 @@ const Map = ({ center }) => {
 
 export default Map;
 
+// // 1) test 
+	// const watchUser = (position) => {
+	// 	const { latitude, longitude,accuracy,heading } = position.coords;
+	// 	setUserLatitude(latitude)
+	// 	setUserLongitude(longitude)
+	// 	setUserAccuracy(accuracy)
+	// 	count++
+		// console.log('count>>>>>>>>',count );
+		// console.log('latitude>>',latitude);
+		// console.log('longitude>>',longitude);
+		// console.log('accuracy>>',accuracy);
+		// console.log('heading>>',heading);
+	// }	
 
+	// const userMove = navigator.geolocation.watchPosition(watchUser)
+
+	//  // 2) test 
+	// useEffect(() => {
+	// 	const watchId = () => navigator.geolocation.watchPosition(position => {
+	// 		count++
+	// 		const { latitude, longitude,accuracy,speed, heading } = position.coords;
+	// 		setUserLatitude(latitude);
+	// 		setUserLongitude(longitude);
+	// 		setUserAccuracy(accuracy)
+
+
+	// 		console.log('count>>>>>>>>',count );
+	// 		console.log('latitude>>',latitude);
+	// 		console.log('longitude>>',longitude);
+	// 		console.log('accuracy>>',accuracy);
+	// 		console.log('heading>>',heading);
+			
+	// 	});
+	// 	watchId()
+	// },[userAccuracy])
+
+	// const interval = setInterval(() => {
+		// const watchId = () => navigator.geolocation.watchPosition(position => {
+		// 	count++
+		// 	const { latitude, longitude,accuracy,speed, heading } = position.coords;
+		// 	setUserLatitude(latitude);
+		// 	setUserLongitude(longitude);
+		// 	setUserAccuracy(accuracy)
+
+
+		// 	console.log('count>>>>>>>>',count );
+		// 	console.log('latitude>>',latitude);
+		// 	console.log('longitude>>',longitude);
+		// 	console.log('accuracy>>',accuracy);
+		// 	console.log('heading>>',heading);
+			
+		// });
+		// watchId()
+
+	// }, 1000);
 
 
 // const componentDidMount = () => {
@@ -118,4 +208,53 @@ export default Map;
 	// 	console.log(position.coords);
 	// 	// Show a map centered at latitude / longitude.
 	// });
+
+	// // 3) test 
+	// useEffect(() => {
+	// 	setInterval(() => {
+	// 		const watchId = () => navigator.geolocation.watchPosition(position => {
+	// 			count++
+	// 			const { latitude, longitude,accuracy,speed, heading } = position.coords;
+	// 			setUserLatitude(latitude);
+	// 			setUserLongitude(longitude);
+	// 			setUserAccuracy(accuracy)
+	
+	
+	// 			console.log('count>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',count );
+	// 			console.log('latitude>>',latitude);
+	// 			console.log('longitude>>',longitude);
+	// 			console.log('accuracy>>',accuracy);
+	// 			console.log('heading>>',heading);
+				
+	// 		});
+	// 		watchId()
+	// 	}, 1000);
+	//   }, []);
+
+
+	//   function initMap() {
+    //     var map = new window.google.maps.Map(document.getElementsByClassName('container'), {
+    //       zoom: 11,
+    //       center: {lat: 59.434349, lng: 24.726588}
+    //     });
+	// 	console.log(map);
+
+	// 	var BecaramangeDelimetr = [
+	// 		{lng:24.726588, lat: 59.434349},
+	// 		{lng:24.766588, lat: 59.434749},
+	// 		{lng:24.786588, lat: 59.434949},
+	// 		{lng:24.716588, lat: 59.434249},
+	// 	]
+	// 	var BecaramangePolygon = new window.google.maps.Polygon({
+	// 		paths:BecaramangeDelimetr,
+	// 		strokeColor: '#FF0000',
+	// 		fillColor: '#FF0000',
+	// 		strokeWeight: 2,
+	// 		fillOpacity: 0.35,
+	// 	})
+	// 	BecaramangePolygon.setMap(map)
+
+
+    
+    //   }
 
